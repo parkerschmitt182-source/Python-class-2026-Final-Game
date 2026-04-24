@@ -25,6 +25,7 @@ momentumY = 0
 #grass = pygame.image.load("grass.png")
 dirt = pygame.image.load("dirt.png")
 enimy = pygame.image.load("enimy.png")
+church = pygame.image.load("image.png")
 #brimstone = pygame.image.load("brimstone.png")
 #lavarock = pygame.image.load("lavarock.png")
 #laceration = pygame.image.load("laceration.png")
@@ -47,6 +48,41 @@ world = pygame.math.Vector2(w/2,h/2)
 playerRect = pygame.Rect(w/2,h/2,100,100)
 playerFeet = playerRect
 ground = pygame.Rect(world.x,world.y+100,1000,100)
+class Church:
+    def __init__(self, position, size, color):
+        self.position = Vector2(position)
+        self.size = size
+        self.rect = pygame.Rect(position, size)
+        self.color = color
+    def draw(self):
+        global church
+        church = pygame.transform.scale(church,self.size)
+        screen.blit(church,block)
+        #pygame.draw.rect(screen, (BLUE), self.rect, 0, 0)
+
+    def collide(self,player):
+        global offset,grounded,mousePos,fallSpeed,momentumY,boost,reticle
+
+        if self.rect.colliderect(player):
+            leftOverlap = player.right - self.rect.left
+            rightOverlap = self.rect.right - player.left
+            topOverlap = player.bottom - self.rect.top
+            bottomOverlap = self.rect.bottom - player.top
+            min_overlap = min(leftOverlap, rightOverlap, topOverlap, bottomOverlap)#Which of these overlaps is smallest?
+
+            if min_overlap == topOverlap:
+                momentumY=0
+                offset.y += topOverlap
+
+            elif min_overlap == bottomOverlap:
+                momentumY=0
+                offset.y -= bottomOverlap
+                boost=0
+
+            elif min_overlap == leftOverlap:
+                offset.x += leftOverlap
+            elif min_overlap == rightOverlap:
+                offset.x -= rightOverlap
 class Enimy:
     def __init__(self, position, size, color):
         self.position = Vector2(position)
@@ -182,12 +218,12 @@ def gravity():
         offset.y-=momentumY
 
 tilemap = [
-    'B_______B',
-    'B________',
-    'B____E___B',
-    'B__________E______',
-    'B______BBBBBBBBBBBB',
-    'BBBBBBBBB'
+    'B_______B___________________________________________________________________________________',
+    'B___________________________________________________________________________________________',
+    'B____E___B_________________________________________________________________________________',
+    'B______C____E_______________________________________________________________________________',
+    'B__________________________________________________________________________________________',
+    'BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB'
             ]
 blocks = []
 tileSize = 100
@@ -196,6 +232,8 @@ for y, row in enumerate(tilemap):
     for x, tile in enumerate(row):
         if tile == 'B':
             blocks.append(Block((offset.x + (x*tileSize), offset.y+(y*tileSize)), (tileSize, tileSize), BLUE))
+        if tile == "C":
+             blocks.append(Church((offset.x + (x*500), offset.y+(y*500)), (500, 500), BLUE))
         if tile =="E":
             if enimynum == 1:
                 enimy1 = Enimy((offset.x + (x*tileSize), offset.y+(y*tileSize)), (tileSize, tileSize), RED)
@@ -209,9 +247,9 @@ world = pygame.Vector2(playerRect.x+offset.x,playerRect.y+offset.y)
 print(str(blocks))
 old = enimy1.position[0]
 while gameLoop:
+    enimybox = enimy1.position
 
     enimy1.position[0] +=1
-
         #blocks[num].position[0] +=1
     print(blocks[11].position)# =
     #perform all physics calculations first
