@@ -2,6 +2,7 @@ import pygame, sys
 from pygame.locals import *
 import time
 pygame.init()
+levelstart = 0
 screenW = 1000
 screenH = 1000
 screen = pygame.display.set_mode((screenW, screenH))
@@ -27,19 +28,25 @@ imagenum = 0
 animation = 0
 imagerow = 0
 speed = 2
+menuenabled = 0
 def text(text2, x, y):
     my_font = pygame.font.SysFont('Arial', 30)
     text_surface = my_font.render(text2, True, colorBlack)
 
     screen.blit(text_surface, (x, y))
+levelname = "lacinal"
+def Menu(level):
+    pygame.draw.rect(screen, (157, 171, 191), (50, 50, 200, 100), border_radius=15)
+    text(level, 60,50)
+    text(levelname, 60,60)
 while Running==True:
     screen.fill(colorBlack)
     QB1 = pygame.image.load("background.jpeg")
     QB1 = pygame.transform.scale(QB1, (screen.get_width(), screen.get_height()))
     screen.blit(QB1,(0,0),(0,0,screen.get_width(),screen.get_height()))
     key = pygame.key.get_pressed()
-    text("helllo", 50,50)
-    text("helllo", 50,100)
+    if menuenabled == 1:
+        Menu("Level One")
     if key[pygame.K_LEFT]:
         playerX -= speed
         imagerow = 0
@@ -72,16 +79,20 @@ while Running==True:
         playerY=screenH-playerH
     image = 132 * imagenum
     imageY = 172 * imagerow
-    screen.blit(loadred, (100, 200))
-    levelone = pygame.Rect((100,200,150,150))
+    screen.blit(loadred, (500, 200))
+    levelone = pygame.Rect((500,200,150,150))
     playerRect = pygame.Rect((playerX,playerY,playerW,playerH))
     screen.blit(loadimage, (playerX, playerY), (image, imageY,132,172))
 
     pygame.display.update()
+    menuenabled = 0
     if playerRect.colliderect(levelone):
         print("levelone")
+        menuenabled = 1
         if key[pygame.K_RETURN]:
              Running = False
+             levelstart = 1
+
     for event in pygame.event.get():
         if event.type == QUIT:
             Running = False
@@ -95,8 +106,8 @@ pygame.quit()
 
 
 
-
-import Levelone
+if levelstart == ("levelone"):
+    import Levelone
 
 
 

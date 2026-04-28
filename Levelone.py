@@ -18,7 +18,8 @@ gameLoop = True
 playerSpeed = 5
 grounded = False
 fallSpeed = 9
-
+imagenum = 1
+imagerow = 0
 momentumX = 0
 momentumY = 0
 
@@ -30,7 +31,7 @@ church = pygame.image.load("image.png")
 #lavarock = pygame.image.load("lavarock.png")
 #laceration = pygame.image.load("laceration.png")
 #weakness= pygame.image.load("weakness.png")
-
+imageswitch = 0
 boost = 10
 boostVector = (0,0)
 acceptingNewVector = True
@@ -154,7 +155,7 @@ class Block:
             elif min_overlap == rightOverlap:
                 offset.x -= rightOverlap
 def handleInputs():
-    global gameLoop,boost,world,acceptingNewVector,inRange
+    global gameLoop,boost,world,acceptingNewVector,inRange, imageswitch,imagenum,imagerow
     keys = pygame.key.get_pressed()
     if keys[pygame.K_w]:
             #if inRange==True:
@@ -166,9 +167,23 @@ def handleInputs():
         #offset.y -= playerSpeed
         pass
     if keys[pygame.K_a]:
-        offset.x += playerSpeed
+        offset.x += playerSpeed + 5
+        imagerow = 0
+        imageswitch +=1
+        if imageswitch == 5:
+            imageswitch =0
+            imagenum+=1
+        if imagenum == 3:
+            imagenum = 0
     if keys[pygame.K_d]:
-        offset.x -= playerSpeed
+        offset.x -= playerSpeed + 5
+        imagerow = 1
+        imageswitch +=1
+        if imageswitch == 5:
+            imageswitch =0
+            imagenum+=1
+        if imagenum == 3:
+            imagenum = 0
     for event in pygame.event.get():
         if event.type == pygame.MOUSEBUTTONDOWN:
             print(f"Mouse button {event.button} clicked at {event.pos}")
@@ -183,11 +198,16 @@ def handleInputs():
 def drawPlayer():
     
     #screen.blit(soulImage,(playerRect.centerx-soulImageSize/2,playerRect.centery-soulImageSize/2),(soulImageX,0,soulImageStep,soulImageH))
-    
-    
-    
-    
-    pygame.draw.rect(screen, ('orange'), (playerRect),0,5)
+        loadimage = pygame.image.load("spite.png")
+
+        image = 132 * imagenum
+        imageY = 172 * imagerow
+
+        screen.blit(loadimage, (playerRect[0], playerRect[1]-65), (image, imageY,132,172))
+        # 3. Inside your game loop, replace the draw.rect call with:
+
+
+
     
 
 
@@ -218,12 +238,12 @@ def gravity():
         offset.y-=momentumY
 
 tilemap = [
-    'B_______B___________________________________________________________________________________',
-    'B___________________________________________________________________________________________',
-    'B____E___B_________________________________________________________________________________',
-    'B______C____E_______________________________________________________________________________',
-    'B__________________________________________________________________________________________',
-    'BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB'
+    'B_______B________________________________________________________BBBB___________________________',
+    'B_______________________________________________________________B____________________________',
+    'B____E___B___________________________________________BBBB______________________________________',
+    'B______C____E_____________________________BBBBB__________________________________________________',
+    'B_______________________________BBBBB___________________________________________________________',
+    'BBBBBBBBBBBBBBBBBBBBBBB'
             ]
 blocks = []
 tileSize = 100
