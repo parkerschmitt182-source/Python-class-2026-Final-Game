@@ -1,3 +1,45 @@
+astilines = [
+"In both the Eucharistic",
+"miracles of Asti from the",
+"consecrated Host gushed",
+"out real blood and there are",
+"numerous documents that",
+"confirm these events. In the",
+"first miracle, Mons. Scipione",
+"Roero had a notary act",
+"drawn up and Pope Paul III",
+"on November 6, 1535",
+"granted a plenary indulgence",
+"to anyone who visited the",
+"Church of San Secondo on",
+"the anniversary of the",
+"miraculous event"
+]
+alatrilines = [
+"In Alatri's Cathedral of",
+"Saint Paul the Apostle is kept",
+"even today the reliquary",
+"of the Eucharistic miracle",
+"that occurred in 1228 and",
+"consisted in a fragment of",
+"the Host turning into flesh.",
+"A young woman, in an effort",
+"to regain the love of her",
+"sweetheart, consulted a",
+"sorceress who ordered her",
+"to steal a consecrated Host to",
+"make a love potion. During",
+"Mass, the young woman hid",
+"a Host in a cloth. But when",
+"she got home, she realized",
+"that the Host had been",
+"transformed into bleeding flesh.",
+"This miracle has extensive",
+"documentation, including",
+"from Pope Gregory IX."
+]
+
+
 import pygame, sys
 from pygame.locals import *
 import time
@@ -22,7 +64,8 @@ playerH = 50
 colorBlack = (0,0,0)
 colorRed = (255,0,0)
 loadimage = pygame.image.load("spite.png")
-loadred = pygame.image.load("asti.png")
+asti = pygame.image.load("asti.png")
+alatri = pygame.image.load("alatri.png")
 imageW = 1148
 numberOfImages = 8
 step = imageW/numberOfImages
@@ -35,18 +78,40 @@ Running = True
 imagenum = 0
 animation = 0
 imagerow = 0
-speed = 2
+speed = 5
 menuenabled = 0
 def text(text2, x, y, size):
     my_font = pygame.font.SysFont('Arial', size)
     text_surface = my_font.render(text2, True, 'white')
 
     screen.blit(text_surface, (x, y))
-levelname = "Asti"
+
 def Menu(level):
-    pygame.draw.rect(screen, (157, 171, 191), (10, 50, 200, 100), border_radius=15)
-    text(level, 20,60,30)
-    text(levelname, 20,90, 30)
+
+    if levelname == "Asti":
+        pygame.draw.rect(screen, (157, 171, 191), (10, 50, 270, 400), border_radius=15)
+        text(level, 20,60,30)
+        text(levelname, 20,90, 30)
+        middle = 20
+        height = 120
+        line = 0
+        for i in range (len(astilines)):
+            text(astilines[line], middle, height, 20)
+            height += 20
+            line +=1
+    if levelname == "Alatri":
+        pygame.draw.rect(screen, (157, 171, 191), (10, 50, 290, 500), border_radius=15)
+        text(level, 20,60,30)
+        text(levelname, 20,90, 30)
+
+        middle = 20
+        height = 120
+        line = 0
+        for i in range (len(alatrilines)):
+            text(alatrilines[line], middle, height, 20)
+            height += 20
+            line +=1
+
 showtut = True
 def tutorial():
     widthtut = 250
@@ -54,6 +119,7 @@ def tutorial():
     middle = screen.get_width() /2 - widthtut/2
 
     pygame.draw.rect(screen, (157, 171, 191), (middle, 10, widthtut, heighttut), border_radius=15)
+    middle +=10
     text("Tuturial", middle,20,30)
     text("Arrow Keys To Move", middle,50, 20)
     text("Space to shoot", middle,70, 20)
@@ -71,8 +137,8 @@ pygame.display.update()
 loadw = 1
 for i in range (100):
     loadw += 5
-    pygame.draw.rect(screen, (255, 255, 255), (250, 150, 500, 5))
-    pygame.draw.rect(screen, (0, 255, 0), (250, 150, loadw, 5))
+    pygame.draw.rect(screen, (255, 255, 255), (250, 150, 500, 5), border_radius=15)
+    pygame.draw.rect(screen, (0, 255, 0), (250, 150, loadw, 5), border_radius=15)
 
     pygame.display.update()
     time.sleep(.01)
@@ -93,8 +159,12 @@ while Running==True:
     if showtut:
         tutorial()
     if menuenabled == 1:
-        Menu("Level 1")
         levelname = "Asti"
+        Menu("Level 1")
+    if menuenabled == 2:
+        levelname = "Alatri"
+        Menu("Level 2")
+
     if key[pygame.K_e]:
          showtut = False
     if key[pygame.K_LEFT]:
@@ -131,8 +201,10 @@ while Running==True:
         playerY=screenH-playerH
     image = 132 * imagenum
     imageY = 172 * imagerow
-    screen.blit(loadred, (500, 200))
+    screen.blit(asti, (500, 200))
+    screen.blit(alatri, (200, 200))
     levelone = pygame.Rect((500,200,150,150))
+    leveltwo = pygame.Rect((200,200,150,150))
     playerRect = pygame.Rect((playerX,playerY,playerW,playerH))
     screen.blit(loadimage, (playerX, playerY), (image, imageY,132,172))
 
@@ -144,7 +216,12 @@ while Running==True:
         if key[pygame.K_RETURN]:
              Running = False
              levelstart = 1
-
+    if playerRect.colliderect(leveltwo):
+        print("leveltwo")
+        menuenabled = 2
+        if key[pygame.K_RETURN]:
+             Running = False
+             levelstart = 2
     for event in pygame.event.get():
         if event.type == QUIT:
             Running = False
