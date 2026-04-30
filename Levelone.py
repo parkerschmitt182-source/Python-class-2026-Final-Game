@@ -13,7 +13,7 @@ BLACK = (0,0,0)
 GREEN = (0,255,0)
 RED = (255,0,0)
 PEACH = (255,176,156)
-
+touchingground = False
 gameLoop = True
 playerSpeed = 5
 grounded = False
@@ -132,9 +132,10 @@ class Block:
         #pygame.draw.rect(screen, (BLUE), self.rect, 0, 0)
         
     def collide(self,player):
-        global offset,grounded,mousePos,fallSpeed,momentumY,boost,reticle
+        global offset,grounded,mousePos,fallSpeed,momentumY,boost,reticle,touchingground
             
         if self.rect.colliderect(player):
+          #  touchingground = True
             leftOverlap = player.right - self.rect.left
             rightOverlap = self.rect.right - player.left
             topOverlap = player.bottom - self.rect.top
@@ -155,18 +156,21 @@ class Block:
             elif min_overlap == rightOverlap:
                 offset.x -= rightOverlap
 def handleInputs():
-    global gameLoop,boost,world,acceptingNewVector,inRange, imageswitch,imagenum,imagerow
+    global gameLoop,boost,world,acceptingNewVector,inRange, imageswitch,imagenum,imagerow, touchingground
     keys = pygame.key.get_pressed()
-    if keys[pygame.K_w]:
+    if keys[pygame.K_UP]:
             #if inRange==True:
               #  inRange = False
-            boost = 10
-            acceptingNewVector = True
+            if touchingground:
+                boost = 10
+                acceptingNewVector = True
+                touchingground = False
         #pass
-    if keys[pygame.K_s]:
+    if keys[pygame.K_DOWN]:
         #offset.y -= playerSpeed
         pass
-    if keys[pygame.K_a]:
+    if keys[pygame.K_LEFT]:
+        facing = "left"
         offset.x += playerSpeed + 5
         imagerow = 0
         imageswitch +=1
@@ -175,8 +179,9 @@ def handleInputs():
             imagenum+=1
         if imagenum == 3:
             imagenum = 0
-    if keys[pygame.K_d]:
+    if keys[pygame.K_RIGHT]:
         offset.x -= playerSpeed + 5
+        facing = "right"
         imagerow = 1
         imageswitch +=1
         if imageswitch == 5:
@@ -212,7 +217,7 @@ def drawPlayer():
 
 
 def angleCalc():
-    global playerRect,boost,offset,acceptingNewVector,boostVector,mousePos,reticle
+    global playerRect,boost,offset,acceptingNewVector,boostVector,mousePos,reticle, touchingground
     direction_vector = Vector2( 384, 540) - playerRect.center
     if direction_vector.length() > 0:
         direction_vector = direction_vector.normalize()
@@ -222,13 +227,16 @@ def angleCalc():
     #pygame.draw.rect(screen, ('yellow'), reticle,0,5)
     
     if (acceptingNewVector):
+        #if touchingground:
         boostVector = direction_vector
         acceptingNewVector = False
-        
+        #touchingground = False
+        #else:
+           # touchingground = False
     velocity = boostVector * boost * 4
     offset += velocity
     if boost > 0:
-        boost -= 1
+      boost -= 1
 def gravity():
     global offset,grounded,fallSpeed,momentumY
     
@@ -266,17 +274,23 @@ for y, row in enumerate(tilemap):
 world = pygame.Vector2(playerRect.x+offset.x,playerRect.y+offset.y)
 print(str(blocks))
 old = enimy1.position[0]
+
+speed = 1
+
+
+
 while gameLoop:
     enimybox = enimy1.position
+    enimy1.position[0] += 10
 
-    enimy1.position[0] +=1
-        #blocks[num].position[0] +=1
+
+
+
+
     print(blocks[11].position)# =
-    #perform all physics calculations first
     screen.fill(BLUE)
     clock.tick(FPS)
     mousePos = pygame.mouse.get_pos()
-    #grounded = False
     
     handleInputs()
 
