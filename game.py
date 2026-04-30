@@ -38,25 +38,24 @@ alatrilines = [
 "documentation, including",
 "from Pope Gregory IX."
 ]
-
-
+#importing modules and initializing pygame and mixer
 import pygame, sys
 from pygame.locals import *
 import time
 pygame.init()
-import pygame
 pygame.mixer.init()
+#defining sounds
 boot = pygame.mixer.Sound("boot.mp3")
 stepsound = pygame.mixer.Sound("step.mp3")
 boot.play()
-import pygame
-from pygame.locals import *
-from pygame import mixer
+#defining variables
 levelstart = 0
 screenW = 1000
 screenH = 1000
 screen = pygame.display.set_mode((screenW, screenH))
 pygame.display.set_caption('myGame')
+asti = pygame.image.load("asti.png")
+alatri = pygame.image.load("alatri-grey.png")
 playerX = screenW/2
 playerY = screenH/2
 playerW = 50
@@ -64,8 +63,6 @@ playerH = 50
 colorBlack = (0,0,0)
 colorRed = (255,0,0)
 loadimage = pygame.image.load("spite.png")
-asti = pygame.image.load("asti.png")
-alatri = pygame.image.load("alatri.png")
 imageW = 1148
 numberOfImages = 8
 step = imageW/numberOfImages
@@ -80,14 +77,13 @@ animation = 0
 imagerow = 0
 speed = 5
 menuenabled = 0
+
+#defining functions
 def text(text2, x, y, size):
     my_font = pygame.font.SysFont('Arial', size)
     text_surface = my_font.render(text2, True, 'white')
-
     screen.blit(text_surface, (x, y))
-
 def Menu(level):
-
     if levelname == "Asti":
         pygame.draw.rect(screen, (157, 171, 191), (10, 50, 270, 400), border_radius=15)
         text(level, 20,60,30)
@@ -103,7 +99,6 @@ def Menu(level):
         pygame.draw.rect(screen, (157, 171, 191), (10, 50, 290, 500), border_radius=15)
         text(level, 20,60,30)
         text(levelname, 20,90, 30)
-
         middle = 20
         height = 120
         line = 0
@@ -111,13 +106,11 @@ def Menu(level):
             text(alatrilines[line], middle, height, 20)
             height += 20
             line +=1
-
 showtut = True
 def tutorial():
     widthtut = 250
     heighttut = 150
     middle = screen.get_width() /2 - widthtut/2
-
     pygame.draw.rect(screen, (157, 171, 191), (middle, 10, widthtut, heighttut), border_radius=15)
     middle +=10
     text("Tuturial", middle,20,30)
@@ -126,10 +119,6 @@ def tutorial():
     text("Enter to enter Level", middle,90, 20)
     text("Get to the end of the level", middle,110, 20)
     text("Press E to exit Tutorial", middle,130, 10)
-
-
-
-
 screen.fill(colorBlack)
 middle = screen.get_width() /2
 text("PHOTOGRAPH: Eurcharistic Miracles", 75, 50, 50)
@@ -139,18 +128,12 @@ for i in range (100):
     loadw += 5
     pygame.draw.rect(screen, (255, 255, 255), (250, 150, 500, 5), border_radius=15)
     pygame.draw.rect(screen, (0, 255, 0), (250, 150, loadw, 5), border_radius=15)
-
     pygame.display.update()
     time.sleep(.01)
-mixer.init()
-mixer.music.load('Menu.mp3')
-mixer.music.play()
-
-
-
-
+pygame.mixer.init()
+pygame.mixer.music.load('Menu.mp3')
+pygame.mixer.music.play()
 while Running==True:
-
     screen.fill(colorBlack)
     QB1 = pygame.image.load("background.jpeg")
     QB1 = pygame.transform.scale(QB1, (screen.get_width(), screen.get_height()))
@@ -164,7 +147,6 @@ while Running==True:
     if menuenabled == 2:
         levelname = "Alatri"
         Menu("Level 2")
-
     if key[pygame.K_e]:
          showtut = False
     if key[pygame.K_LEFT]:
@@ -207,9 +189,11 @@ while Running==True:
     leveltwo = pygame.Rect((200,200,150,150))
     playerRect = pygame.Rect((playerX,playerY,playerW,playerH))
     screen.blit(loadimage, (playerX, playerY), (image, imageY,132,172))
-
     pygame.display.update()
     menuenabled = 0
+    #Pinpoints
+
+
     if playerRect.colliderect(levelone):
         print("levelone")
         menuenabled = 1
@@ -227,19 +211,9 @@ while Running==True:
             Running = False
     if key[pygame.K_ESCAPE]:
         Running = False
-
-
-
 #pygame.quit()
-
-
-
-
 if levelstart == (1):
-
     import Levelone
-
-
-
-
+if levelstart == (2):
+    import Leveltwo
 sys.exit()

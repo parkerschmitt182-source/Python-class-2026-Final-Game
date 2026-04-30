@@ -165,7 +165,7 @@ class Block:
             elif min_overlap == rightOverlap:
                 offset.x -= rightOverlap
 def handleInputs():
-    global gameLoop,boost,world,acceptingNewVector,inRange, imageswitch,imagenum,imagerow, touchingground,bulletx,bullety,shot
+    global gameLoop,facing,boost,world,acceptingNewVector,inRange, imageswitch,imagenum,imagerow, touchingground,bulletx,bullety,shot
     keys = pygame.key.get_pressed()
     if keys[pygame.K_UP]:
             #if inRange==True:
@@ -262,7 +262,7 @@ tilemap = [
     'B____________________________________________________BBBB______B______________________________',
     'B_______B____________________________________BBBB___________________________________________',
     'B______C____E_________________________BBBBB__________________________________________________',
-    'B_____________________________BBBBB___________________________________________________________',
+    'B________________________BBBBBBBBBB___________________________________________________________',
     'BBBBBBBBBBBBBBBBBBBBBBB_________________________________________________________________'
             ]
 blocks = []
@@ -292,6 +292,7 @@ speed = 1
 
 
 while gameLoop:
+    bullety = playerRect.y - 50
 
     bullethit = pygame.Rect((bulletx,bullety,50,50))
 
@@ -313,12 +314,16 @@ while gameLoop:
     handleInputs()
     if shot:
         if bullethit.colliderect(enimy1.position[0], enimy1.position[1], 100, 100):
-            print("kill")
+            if shot:
+                print("kill")
 
         alatri = pygame.image.load("bullet.png")
         screen.blit(alatri, (bulletx, bullety))
-        bulletx += 30
-
+        if facing == "right":
+            bulletx += 30
+        if facing == "left":
+            bulletx -= 30
+        
 
         if bulletx > 700:
             bulletx = playerRect.x
