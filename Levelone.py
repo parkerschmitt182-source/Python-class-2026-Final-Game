@@ -15,14 +15,17 @@ RED = (255,0,0)
 PEACH = (255,176,156)
 touchingground = False
 gameLoop = True
-playerSpeed = 5
+playerSpeed = 10
 grounded = False
 fallSpeed = 9
 imagenum = 1
 imagerow = 0
 momentumX = 0
 momentumY = 0
-
+bulletx = 350
+alive = True
+bullety = 250
+shot = False
 #grass = pygame.image.load("grass.png")
 dirt = pygame.image.load("dirt.png")
 enimy = pygame.image.load("enimy.png")
@@ -91,34 +94,39 @@ class Enimy:
         self.rect = pygame.Rect(position, size)
         self.color = color
     def draw(self):
-        global enimy
-        enimy = pygame.transform.scale(enimy,self.size)
-        screen.blit(enimy,block)
+        global enimy,alive
+        if alive:
+            enimy = pygame.transform.scale(enimy,self.size)
+            screen.blit(enimy,block)
         #pygame.draw.rect(screen, (BLUE), self.rect, 0, 0)
 
     def collide(self,player):
-        global offset,grounded,mousePos,fallSpeed,momentumY,boost,reticle
+        global offset,grounded,mousePos,fallSpeed,momentumY,boost,reticle,bullethit,alive
 
         if self.rect.colliderect(player):
-            leftOverlap = player.right - self.rect.left
-            rightOverlap = self.rect.right - player.left
-            topOverlap = player.bottom - self.rect.top
-            bottomOverlap = self.rect.bottom - player.top
-            min_overlap = min(leftOverlap, rightOverlap, topOverlap, bottomOverlap)#Which of these overlaps is smallest?
+            print("hit")
+        if self.rect.colliderect(bullethit):
+            print("kill")
+            alive = False
+            #leftOverlap = player.right - self.rect.left
+            #rightOverlap = self.rect.right - player.left
+            #topOverlap = player.bottom - self.rect.top
+            #bottomOverlap = self.rect.bottom - player.top
+            #min_overlap = min(leftOverlap, rightOverlap, topOverlap, bottomOverlap)#Which of these overlaps is smallest?
 
-            if min_overlap == topOverlap:
-                momentumY=0
-                offset.y += topOverlap
+            #if min_overlap == topOverlap:
+                #momentumY=0
+                #offset.y += topOverlap
 
-            elif min_overlap == bottomOverlap:
-                momentumY=0
-                offset.y -= bottomOverlap
-                boost=0
+            #elif min_overlap == bottomOverlap:
+                #momentumY=0
+                #offset.y -= bottomOverlap
+                #boost=0
 
-            elif min_overlap == leftOverlap:
-                offset.x += leftOverlap
-            elif min_overlap == rightOverlap:
-                offset.x -= rightOverlap
+            #elif min_overlap == leftOverlap:
+                #offset.x += leftOverlap
+            #elif min_overlap == rightOverlap:
+                #offset.x -= rightOverlap
 class Block:
     def __init__(self, position, size, color):
         self.position = Vector2(position)
@@ -135,7 +143,8 @@ class Block:
         global offset,grounded,mousePos,fallSpeed,momentumY,boost,reticle,touchingground
             
         if self.rect.colliderect(player):
-          #  touchingground = True
+            touchingground = True
+
             leftOverlap = player.right - self.rect.left
             rightOverlap = self.rect.right - player.left
             topOverlap = player.bottom - self.rect.top
@@ -156,7 +165,7 @@ class Block:
             elif min_overlap == rightOverlap:
                 offset.x -= rightOverlap
 def handleInputs():
-    global gameLoop,boost,world,acceptingNewVector,inRange, imageswitch,imagenum,imagerow, touchingground
+    global gameLoop,boost,world,acceptingNewVector,inRange, imageswitch,imagenum,imagerow, touchingground,bulletx,bullety,shot
     keys = pygame.key.get_pressed()
     if keys[pygame.K_UP]:
             #if inRange==True:
@@ -189,6 +198,9 @@ def handleInputs():
             imagenum+=1
         if imagenum == 3:
             imagenum = 0
+    if keys[pygame.K_SPACE]:
+        shot = True
+
     for event in pygame.event.get():
         if event.type == pygame.MOUSEBUTTONDOWN:
             print(f"Mouse button {event.button} clicked at {event.pos}")
@@ -246,12 +258,12 @@ def gravity():
         offset.y-=momentumY
 
 tilemap = [
-    'B_______B________________________________________________________BBBB___________________________',
-    'B_______________________________________________________________B____________________________',
-    'B____E___B___________________________________________BBBB______________________________________',
-    'B______C____E_____________________________BBBBB__________________________________________________',
-    'B_______________________________BBBBB___________________________________________________________',
-    'BBBBBBBBBBBBBBBBBBBBBBB'
+    'B_______B_________________________________________________BBBB________________________________',
+    'B____________________________________________________BBBB______B______________________________',
+    'B_______B____________________________________BBBB___________________________________________',
+    'B______C____E_________________________BBBBB__________________________________________________',
+    'B_____________________________BBBBB___________________________________________________________',
+    'BBBBBBBBBBBBBBBBBBBBBBB_________________________________________________________________'
             ]
 blocks = []
 tileSize = 100
@@ -280,20 +292,37 @@ speed = 1
 
 
 while gameLoop:
+
+    bullethit = pygame.Rect((bulletx,bullety,50,50))
+
     enimybox = enimy1.position
     enimy1.position[0] += 10
+    if offset.x < -6222.010828212269:
+        time.sleep(1)
+        gameLoop = False
 
 
 
-
-
-    print(blocks[11].position)# =
     screen.fill(BLUE)
+    QB1 = pygame.image.load("background2.jpeg")
+    QB1 = pygame.transform.scale(QB1, (screen.get_width(), screen.get_height()))
+    screen.blit(QB1,(0,0),(0,0,screen.get_width(),screen.get_height()))
     clock.tick(FPS)
     mousePos = pygame.mouse.get_pos()
     
     handleInputs()
+    if shot:
+        if bullethit.colliderect(enimy1.position[0], enimy1.position[1], 100, 100):
+            print("kill")
 
+        alatri = pygame.image.load("bullet.png")
+        screen.blit(alatri, (bulletx, bullety))
+        bulletx += 30
+
+
+        if bulletx > 700:
+            bulletx = playerRect.x
+            shot = False
     w, h = pygame.display.get_surface().get_size()
     playerRect = pygame.Rect(w/2-playerRect.w/2,h/2-playerRect.h/2,100,100)
     world = pygame.Vector2(playerRect.x+offset.x,playerRect.y+offset.y)

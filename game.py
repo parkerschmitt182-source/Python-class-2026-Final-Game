@@ -230,12 +230,13 @@ while Running==True:
 
 
 
-pygame.quit()
+#pygame.quit()
 
 
 
 
 if levelstart == (1):
+
     import Levelone
 
 
