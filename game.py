@@ -55,7 +55,7 @@ screenH = 1000
 screen = pygame.display.set_mode((screenW, screenH))
 pygame.display.set_caption('myGame')
 asti = pygame.image.load("asti.png")
-alatri = pygame.image.load("alatri-grey.png")
+alatri = pygame.image.load("alatri.png")
 playerX = screenW/2
 playerY = screenH/2
 playerW = 50
