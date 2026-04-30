@@ -183,10 +183,10 @@ while Running==True:
         playerY=screenH-playerH
     image = 132 * imagenum
     imageY = 172 * imagerow
-    screen.blit(asti, (500, 200))
-    screen.blit(alatri, (200, 200))
-    levelone = pygame.Rect((500,200,150,150))
-    leveltwo = pygame.Rect((200,200,150,150))
+    screen.blit(asti, (200, 500))
+    screen.blit(alatri, (500, 100))
+    levelone = pygame.Rect((200,500,150,150))
+    leveltwo = pygame.Rect((500,100,150,150))
     playerRect = pygame.Rect((playerX,playerY,playerW,playerH))
     screen.blit(loadimage, (playerX, playerY), (image, imageY,132,172))
     pygame.display.update()
