@@ -3,7 +3,11 @@ from pygame.locals import *
 from pygame.math import Vector2
 import time
 pygame.init()
+facing = "left"
 pygame.mixer.init()
+bulletspeed = 60
+#defining sounds
+lazer = pygame.mixer.Sound("lazer.mp3")
 font = pygame.font.SysFont(None, 40)
 enimynum =1
 BLUE = (0,0,255)
@@ -105,9 +109,8 @@ class Enimy:
 
         if self.rect.colliderect(player):
             print("hit")
-        if self.rect.colliderect(bullethit):
-            print("kill")
-            alive = False
+
+            #alive = False
             #leftOverlap = player.right - self.rect.left
             #rightOverlap = self.rect.right - player.left
             #topOverlap = player.bottom - self.rect.top
@@ -292,6 +295,32 @@ speed = 1
 
 
 while gameLoop:
+    # enimy move
+    enimyspeed = 5
+
+    dx = offset.x - enimy2.position.x
+    dy = offset.y - enimy2.position.y
+
+    # X movement
+    if dx > 0:
+        print("Moving right")
+        enimy2.position.x += enimyspeed
+    elif dx < 0:
+        print("Moving left")
+        enimy2.position.x -= enimyspeed
+
+    # Y movement
+    if dy > 0:
+        print("Moving down")
+        enimy2.position.y += enimyspeed
+    elif dy < 0:
+        print("Moving up")
+        enimy2.position.y -= enimyspeed
+    #enimy2.position.y = offset.y*-1 - 50
+    #enimy2.position.y += 1
+    #enimy2.position.x = offset.x*-1 - 50
+    print(offset.y)
+    
     bullety = playerRect.y - 50
 
     bullethit = pygame.Rect((bulletx,bullety,50,50))
@@ -315,6 +344,8 @@ while gameLoop:
     
     handleInputs()
     if shot:
+        lazer.play()
+        
         if bullethit.colliderect(enimy1.position[0], enimy1.position[1], 100, 100):
             if shot:
                 print("kill")
@@ -322,9 +353,9 @@ while gameLoop:
         alatri = pygame.image.load("bullet.png")
         screen.blit(alatri, (bulletx, bullety))
         if facing == "right":
-            bulletx += 30
+            bulletx += bulletspeed
         if facing == "left":
-            bulletx -= 30
+            bulletx -= bulletspeed 
         
 
         if bulletx > 700:
