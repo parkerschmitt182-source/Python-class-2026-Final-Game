@@ -21,7 +21,7 @@ touchingground = False
 gameLoop = True
 playerSpeed = 10
 grounded = False
-fallSpeed = 9
+fallSpeed = 20
 imagenum = 1
 imagerow = 0
 momentumX = 0
@@ -263,10 +263,10 @@ def gravity():
         offset.y-=momentumY
 
 tilemap = [
-    'B_______B_________________________________________________BBBB________________________________',
+    'B_______B___E______________________________________________BBBB________________________________',
     'B____________________________________________________BBBB______B______________________________',
     'B_______B____________________________________BBBB___________________________________________',
-    'B______C____E_________________________BBBBB__________________________________________________',
+    'B______C_____________________________BBBBB__________________________________________________',
     'B________________________BBBBBBBBBB___________________________________________________________',
     'BBBBBBBBBBBBBBBBBBBBBBB_________________________________________________________________'
             ]
@@ -281,8 +281,8 @@ for y, row in enumerate(tilemap):
              blocks.append(Church((offset.x + (x*500), offset.y+(y*500)), (500, 500), BLUE))
         if tile =="E":
             if enimynum == 1:
-                enimy1 = Enimy((offset.x + (x*tileSize), offset.y+(y*tileSize)), (tileSize, tileSize), RED)
-                blocks.append(enimy1)
+                #enimy1 = Enimy((offset.x + (x*tileSize), offset.y+(y*tileSize)), (tileSize, tileSize), RED)
+                #blocks.append(enimy1)
                 enimynum +=1
             if enimynum == 2:
                 enimy2 = Enimy((offset.x + (x*tileSize), offset.y+(y*tileSize)), (tileSize, tileSize), RED)
@@ -290,7 +290,7 @@ for y, row in enumerate(tilemap):
                 enimynum +=1
 world = pygame.Vector2(playerRect.x+offset.x,playerRect.y+offset.y)
 print(str(blocks))
-old = enimy1.position[0]
+
 
 speed = 1
 
@@ -313,7 +313,7 @@ while gameLoop:
 
     bullethit = pygame.Rect((bulletx,bullety,50,50))
 
-    enimybox = enimy1.position
+    #enimybox = enimy1.position
     # end
 
     if offset.x < -6222.010828212269:
@@ -333,7 +333,7 @@ while gameLoop:
     if shot:
         lazer.play()
         
-        if bullethit.colliderect(enimy1.position[0], enimy1.position[1], 100, 100):
+        if bullethit.colliderect(enimy2.position[0], enimy2.position[1], 100, 100):
             if shot:
                 print("kill")
 
