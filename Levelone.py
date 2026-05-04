@@ -100,8 +100,9 @@ class Enimy:
     def draw(self):
         global enimy,alive
         if alive:
-            enimy = pygame.transform.scale(enimy,self.size)
-            screen.blit(enimy,block)
+            self.rect.topleft = (self.position.x + offset.x, self.position.y + offset.y)
+            image = pygame.transform.scale(enimy, self.size)
+            screen.blit(image, self.rect)
         #pygame.draw.rect(screen, (BLUE), self.rect, 0, 0)
 
     def collide(self,player):
@@ -138,8 +139,9 @@ class Block:
         self.color = color
     def draw(self):
         global dirt
-        dirt = pygame.transform.scale(dirt,self.size)
-        screen.blit(dirt,block)
+        self.rect.topleft = (self.position.x + offset.x, self.position.y + offset.y)
+        image = pygame.transform.scale(dirt, self.size)
+        screen.blit(image, self.rect)
         #pygame.draw.rect(screen, (BLUE), self.rect, 0, 0)
         
     def collide(self,player):
@@ -297,28 +299,14 @@ speed = 1
 while gameLoop:
     # enimy move
     enimyspeed = 5
+    player_world = pygame.Vector2(playerRect.centerx - offset.x,
+                                  playerRect.centery - offset.y)
+    direction = player_world - enimy2.position
+    if direction.length() > 0:
+        direction = direction.normalize()
+        enimy2.position += direction * enimyspeed
 
-    dx = offset.x - enimy2.position.x
-    dy = offset.y - enimy2.position.y
-
-    # X movement
-    if dx > 0:
-        print("Moving right")
-        enimy2.position.x += enimyspeed
-    elif dx < 0:
-        print("Moving left")
-        enimy2.position.x -= enimyspeed
-
-    # Y movement
-    if dy > 0:
-        print("Moving down")
-        enimy2.position.y += enimyspeed
-    elif dy < 0:
-        print("Moving up")
-        enimy2.position.y -= enimyspeed
-    #enimy2.position.y = offset.y*-1 - 50
-    #enimy2.position.y += 1
-    #enimy2.position.x = offset.x*-1 - 50
+    print(f"Enemy at {enimy2.position}, player at {player_world}")
     print(offset.y)
     
     bullety = playerRect.y - 50
@@ -326,8 +314,7 @@ while gameLoop:
     bullethit = pygame.Rect((bulletx,bullety,50,50))
 
     enimybox = enimy1.position
-    enimy1.position[0] += 10
-    #end
+    # end
 
     if offset.x < -6222.010828212269:
         time.sleep(1)
@@ -367,7 +354,7 @@ while gameLoop:
     gravity()
     inRange=False
     for block in blocks:
-        block.rect.topleft = (block.position.x + world.x,block.position.y + world.y)
+        block.rect.topleft = (block.position.x + offset.x, block.position.y + offset.y)
         block.collide(playerRect)
         if block.rect.colliderect(reticle):
             inRange = True
