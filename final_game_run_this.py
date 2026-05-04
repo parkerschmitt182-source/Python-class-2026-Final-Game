@@ -119,20 +119,25 @@ def tutorial():
     text("Enter to enter Level", middle,90, 20)
     text("Get to the end of the level", middle,110, 20)
     text("Press E to exit Tutorial", middle,130, 10)
-screen.fill(colorBlack)
-middle = screen.get_width() /2
-text("PHOTOGRAPH: Eurcharistic Miracles", 75, 50, 50)
-pygame.display.update()
-loadw = 1
-for i in range (100):
-    loadw += 5
-    pygame.draw.rect(screen, (255, 255, 255), (250, 150, 500, 5), border_radius=15)
-    pygame.draw.rect(screen, (0, 255, 0), (250, 150, loadw, 5), border_radius=15)
+def loader():
+    screen.fill(colorBlack)
+    middle = screen.get_width() /2
+    text("PHOTOGRAPH: Eurcharistic Miracles", 75, 50, 50)
     pygame.display.update()
-    time.sleep(.01)
-pygame.mixer.init()
-pygame.mixer.music.load('Menu.mp3')
-pygame.mixer.music.play()
+    loadw = 1
+    for i in range (100):
+        loadw += 5
+        pygame.draw.rect(screen, (255, 255, 255), (250, 150, 500, 5), border_radius=15)
+        pygame.draw.rect(screen, (0, 255, 0), (250, 150, loadw, 5), border_radius=15)
+        pygame.display.update()
+        time.sleep(.01)
+    pygame.mixer.init()
+    pygame.mixer.music.load('Menu.mp3')
+    pygame.mixer.music.play()
+loader()
+
+
+#main loop
 while Running==True:
     screen.fill(colorBlack)
     QB1 = pygame.image.load("background.jpeg")

@@ -298,6 +298,8 @@ while gameLoop:
 
     enimybox = enimy1.position
     enimy1.position[0] += 10
+    #end
+
     if offset.x < -6222.010828212269:
         time.sleep(1)
         gameLoop = False
