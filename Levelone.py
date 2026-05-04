@@ -33,7 +33,7 @@ shot = False
 #grass = pygame.image.load("grass.png")
 dirt = pygame.image.load("dirt.png")
 enimy = pygame.image.load("enimy.png")
-church = pygame.image.load("image.png")
+church = pygame.image.load("church.jpeg")
 #brimstone = pygame.image.load("brimstone.png")
 #lavarock = pygame.image.load("lavarock.png")
 #laceration = pygame.image.load("laceration.png")
@@ -91,6 +91,25 @@ class Church:
                 offset.x += leftOverlap
             elif min_overlap == rightOverlap:
                 offset.x -= rightOverlap
+class Finish:
+    def __init__(self, position, size, color):
+        self.position = Vector2(position)
+        self.size = size
+        self.rect = pygame.Rect(position, size)
+        self.color = color
+    def draw(self):
+        global enimy,alive
+        if alive:
+            self.rect.topleft = (self.position.x + offset.x, self.position.y + offset.y)
+            image = pygame.transform.scale(church, self.size)
+            screen.blit(image, self.rect)
+        #pygame.draw.rect(screen, (BLUE), self.rect, 0, 0)
+
+    def collide(self,player):
+        global offset,grounded,mousePos,fallSpeed,momentumY,boost,reticle,bullethit,alive
+
+        if self.rect.colliderect(player):
+            print("hit")
 class Enimy:
     def __init__(self, position, size, color):
         self.position = Vector2(position)
@@ -263,8 +282,8 @@ def gravity():
         offset.y-=momentumY
 
 tilemap = [
-    'B_______B___E______________________________________________BBBB________________________________',
-    'B____________________________________________________BBBB______B______________________________',
+    'B_______B___E______________________________________________BBBB____F___________________________',
+    'B____________________________________________________BBBB______BBBB___________________________',
     'B_______B____________________________________BBBB___________________________________________',
     'B______C_____________________________BBBBB__________________________________________________',
     'B________________________BBBBBBBBBB___________________________________________________________',
@@ -279,6 +298,10 @@ for y, row in enumerate(tilemap):
             blocks.append(Block((offset.x + (x*tileSize), offset.y+(y*tileSize)), (tileSize, tileSize), BLUE))
         if tile == "C":
              blocks.append(Church((offset.x + (x*500), offset.y+(y*500)), (500, 500), BLUE))
+        if tile =="F":
+            
+            finish = Finish((offset.x + (x*tileSize), offset.y+(y*tileSize)), (tileSize, tileSize), RED)
+            blocks.append(finish)
         if tile =="E":
             if enimynum == 1:
                 #enimy1 = Enimy((offset.x + (x*tileSize), offset.y+(y*tileSize)), (tileSize, tileSize), RED)
@@ -295,25 +318,27 @@ print(str(blocks))
 speed = 1
 
 
-
+enimyalive = True
 while gameLoop:
-    # enimy move
-    enimyspeed = 5
-    player_world = pygame.Vector2(playerRect.centerx - offset.x,
-                                  playerRect.centery - offset.y)
-    direction = player_world - enimy2.position
-    if direction.length() > 0:
-        direction = direction.normalize()
-        enimy2.position += direction * enimyspeed
-
-    print(f"Enemy at {enimy2.position}, player at {player_world}")
-    print(offset.y)
+    if enimyalive:
+        # enimy move
+        enimyspeed = 5
+        player_world = pygame.Vector2(playerRect.centerx - offset.x,
+                                    playerRect.centery - offset.y)
+        direction = player_world - enimy2.position
+        if direction.length() > 0:
+            direction = direction.normalize()
+            enimy2.position += direction * enimyspeed
+    else:
+        enimy2.position = Vector2(-10000,-10000)
+    #print(f"Enemy at {enimy2.position}, player at {player_world}")
+    #print(offset.y)
     
     bullety = playerRect.y - 50
 
     bullethit = pygame.Rect((bulletx,bullety,50,50))
 
-    #enimybox = enimy1.position
+    enimy2box = pygame.Rect((enimy2.position.x,enimy2.position.y,50,50))
     # end
 
     if offset.x < -6222.010828212269:
@@ -332,17 +357,18 @@ while gameLoop:
     handleInputs()
     if shot:
         lazer.play()
-        
-        if bullethit.colliderect(enimy2.position[0], enimy2.position[1], 100, 100):
+        print(enimy2.position[1])
+        if bullethit.colliderect(enimy2box):
             if shot:
                 print("kill")
+                enimyalive = False
 
         alatri = pygame.image.load("bullet.png")
         screen.blit(alatri, (bulletx, bullety))
         if facing == "right":
             bulletx += bulletspeed
-        if facing == "left":
-            bulletx -= bulletspeed 
+        #if facing == "left":
+         #   bulletx -= bulletspeed 
         
 
         if bulletx > 700:
