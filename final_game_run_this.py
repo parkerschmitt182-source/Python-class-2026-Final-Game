@@ -241,7 +241,7 @@ if levelstart == (1):
     import Levelone
 try:
     if levelstart == (2):
-        if levelonebeat == "True":
+        if levelonebeat == "Levelone":
             import Leveltwo
         else:
             
