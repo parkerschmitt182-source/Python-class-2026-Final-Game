@@ -458,7 +458,7 @@ while gameLoop:
         pygame.display.flip()
         time.sleep(5)
         import savefile
-        savefile.save_game("Levelone")
+        savefile.save_game("BothBeat")
         
         gameLoop = False
     print(offset.x)    

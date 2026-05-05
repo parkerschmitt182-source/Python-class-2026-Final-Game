@@ -150,12 +150,16 @@ if levelonebeat == "Levelone":
     screen.fill(colorBlack)
     print("beat screen")
     screen.blit(astibeat, (0,100))
-    screen.blit(alatrinbeat, (500,100))
+    screen.blit(frame, (500,100))
     text("Level One Completed Try to beat level two", 350, 50, 30)
-        
-
-        
-
+    pygame.display.update()
+    time.sleep(5)
+if levelonebeat == "BothBeat":
+    screen.fill(colorBlack)
+    print("beat screen")
+    screen.blit(astibeat, (0,100))
+    screen.blit(alatrinbeat, (500,100))
+    text("Good job all levels done", 350, 50, 30)
     pygame.display.update()
     time.sleep(5)
 while Running==True:
