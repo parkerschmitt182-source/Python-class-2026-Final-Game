@@ -237,6 +237,7 @@ def handleInputs():
                 gameLoop = False
 
 def drawPlayer():
+        global playerRect,imagenum,imagerow
     
     #screen.blit(soulImage,(playerRect.centerx-soulImageSize/2,playerRect.centery-soulImageSize/2),(soulImageX,0,soulImageStep,soulImageH))
         loadimage = pygame.image.load("spite.png")
@@ -248,7 +249,7 @@ def drawPlayer():
         # 3. Inside your game loop, replace the draw.rect call with:
 
 
-
+stopnext = False
     
 
 
@@ -315,11 +316,14 @@ world = pygame.Vector2(playerRect.x+offset.x,playerRect.y+offset.y)
 print(str(blocks))
 
 
-speed = 1
+speed = 5
 
 
 enimyalive = True
 while gameLoop:
+    if offset.x < -6222.010828212269:
+        imagerow = 3
+        imagenum = 0
     if enimyalive:
         # enimy move
         enimyspeed = 5
@@ -341,9 +345,6 @@ while gameLoop:
     enimy2box = pygame.Rect((enimy2.position.x,enimy2.position.y,50,50))
     # end
 
-    if offset.x < -6222.010828212269:
-        time.sleep(1)
-        gameLoop = False
 
 
 
@@ -399,6 +400,36 @@ while gameLoop:
     drawPlayer()
     angleCalc()
     pygame.display.flip()
-    
+    if stopnext:
+        
+        imagerow = 3
+        imagenum = 0
+        pygame.display.set_caption(f"{inRange}")
+        loadimage = pygame.image.load("spite.png")
+        image = 132 * imagenum
+        imageY = 172 * imagerow
+        screen.blit(loadimage, (playerRect[0], playerRect[1]-65), (image, imageY,132,172))
+        angleCalc()
+        pygame.display.flip()
+        time.sleep(1)
+        
+        imagerow = 3
+        imagenum = 1
+        pygame.display.set_caption(f"{inRange}")
+        loadimage = pygame.image.load("spite.png")
+        image = 132 * imagenum
+        imageY = 172 * imagerow
+        screen.blit(loadimage, (playerRect[0], playerRect[1]-65), (image, imageY,132,172))
+        angleCalc()
+        pygame.display.flip()
+        time.sleep(5)
+        
+        gameLoop = False    
+    if offset.x < -6222.010828212269:
+        imagerow = 3
+        imagenum = 0
+        stopnext = True
+        #time.sleep(1)
+        #gameLoop = False    
 
 pygame.quit()
