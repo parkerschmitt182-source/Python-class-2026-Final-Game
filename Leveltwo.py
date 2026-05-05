@@ -6,6 +6,7 @@ pygame.init()
 facing = "left"
 bulletmove = False
 pygame.mixer.init()
+enimyalive2 = True
 bulletspeed = 60
 #defining sounds
 lazer = pygame.mixer.Sound("lazer.mp3")
@@ -287,7 +288,7 @@ def gravity():
         offset.y-=momentumY
 
 tilemap = [
-    'B_______B___E___B____________________________________________________________________F_____',
+    'B_______B___E___B_______________________E____________________________________________F_____',
     'B_______________B________________________________________________________________BBBB_______',
     'B_______B_______B____BBBBBBBBBBB_____________BBBB___________________________BBBB____________',
     'B_______________B____________________BBBBB___________________________BBBBB_____B_____________',
@@ -308,14 +309,15 @@ for y, row in enumerate(tilemap):
             finish = Finish((offset.x + (x*tileSize), offset.y+(y*tileSize)), (tileSize, tileSize), RED)
             blocks.append(finish)
         if tile =="E":
-            if enimynum == 1:
-                #enimy1 = Enimy((offset.x + (x*tileSize), offset.y+(y*tileSize)), (tileSize, tileSize), RED)
-                #blocks.append(enimy1)
-                enimynum +=1
             if enimynum == 2:
                 enimy2 = Enimy((offset.x + (x*tileSize), offset.y+(y*tileSize)), (tileSize, tileSize), RED)
                 blocks.append(enimy2)
                 enimynum +=1
+            if enimynum == 1:
+                enimy1 = Enimy((offset.x + (x*tileSize), offset.y+(y*tileSize)), (tileSize, tileSize), RED)
+                blocks.append(enimy1)
+                enimynum +=1
+
 world = pygame.Vector2(playerRect.x+offset.x,playerRect.y+offset.y)
 print(str(blocks))
 
@@ -339,6 +341,20 @@ while gameLoop:
             enimy2.position += direction * enimyspeed
     else:
         enimy2.position = Vector2(-10000,-10000)
+
+
+
+    if enimyalive2:
+        # enimy move
+        enimyspeed = 5
+        player_world = pygame.Vector2(playerRect.centerx - offset.x,
+                                    playerRect.centery - offset.y)
+        direction = player_world - enimy1.position
+        if direction.length() > 0:
+            direction = direction.normalize()
+            enimy1.position += direction * enimyspeed
+    else:
+        enimy1.position = Vector2(-10000,-10000)
     #print(f"Enemy at {enimy2.position}, player at {player_world}")
     #print(offset.y)
     
@@ -347,6 +363,7 @@ while gameLoop:
     bullethit = pygame.Rect((bulletx+ 100,bullety+100,50,25))
 
     enimy2box = pygame.Rect((enimy2.position.x + offset.x,enimy2.position.y + offset.y,100,100),)
+    enimy1box = pygame.Rect((enimy1.position.x + offset.x,enimy1.position.y + offset.y,100,100),)
     
     # end
 
@@ -374,7 +391,10 @@ while gameLoop:
             if bulletmove:
                 print("kill")
                 enimyalive = False
-
+        if bullethit.colliderect(enimy1box):
+            if bulletmove:
+                print("kill")
+                enimyalive2 = False
         alatri = pygame.image.load("bullet.png")
         screen.blit(alatri, (bulletx, bullety))
         if whenshot == "right":
