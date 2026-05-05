@@ -38,6 +38,10 @@ alatrilines = [
 "documentation, including",
 "from Pope Gregory IX."
 ]
+import savefile
+
+print(savefile.read_game(65964786578236785))
+levelonebeat = savefile.read_game(65964786578236785)
 #importing modules and initializing pygame and mixer
 import pygame, sys
 from pygame.locals import *
@@ -55,6 +59,9 @@ screenH = 1000
 screen = pygame.display.set_mode((screenW, screenH))
 pygame.display.set_caption('myGame')
 asti = pygame.image.load("asti.png")
+astibeat = pygame.image.load("ASTI.png")
+frame = pygame.image.load("frame.png")
+alatrinbeat = pygame.image.load("alatribeat.png")
 alatri = pygame.image.load("alatri.png")
 playerX = screenW/2
 playerY = screenH/2
@@ -138,6 +145,19 @@ loader()
 
 
 #main loop
+
+if levelonebeat == "Levelone":
+    screen.fill(colorBlack)
+    print("beat screen")
+    screen.blit(astibeat, (0,100))
+    screen.blit(alatrinbeat, (500,100))
+    text("Level One Completed Try to beat level two", 350, 50, 30)
+        
+
+        
+
+    pygame.display.update()
+    time.sleep(5)
 while Running==True:
     screen.fill(colorBlack)
     QB1 = pygame.image.load("background.jpeg")
@@ -221,7 +241,11 @@ if levelstart == (1):
     import Levelone
 try:
     if levelstart == (2):
-        import Leveltwo
+        if levelonebeat == "True":
+            import Leveltwo
+        else:
+            
+            import the
 except:
     import pygame
     from tkinter import messagebox

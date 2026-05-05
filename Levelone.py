@@ -4,6 +4,7 @@ from pygame.math import Vector2
 import time
 pygame.init()
 facing = "left"
+bulletmove = False
 pygame.mixer.init()
 bulletspeed = 60
 #defining sounds
@@ -29,6 +30,7 @@ momentumY = 0
 bulletx = 350
 alive = True
 bullety = 250
+allowedtoshoot = True
 shot = False
 #grass = pygame.image.load("grass.png")
 dirt = pygame.image.load("dirt.png")
@@ -189,7 +191,7 @@ class Block:
             elif min_overlap == rightOverlap:
                 offset.x -= rightOverlap
 def handleInputs():
-    global gameLoop,facing,boost,world,acceptingNewVector,inRange, imageswitch,imagenum,imagerow, touchingground,bulletx,bullety,shot
+    global allowedtoshoot,gameLoop,facing,boost,world,acceptingNewVector,inRange, imageswitch,imagenum,imagerow, touchingground,bulletx,bullety,shot
     keys = pygame.key.get_pressed()
     if keys[pygame.K_UP]:
             #if inRange==True:
@@ -223,7 +225,9 @@ def handleInputs():
         if imagenum == 3:
             imagenum = 0
     if keys[pygame.K_SPACE]:
-        shot = True
+        if allowedtoshoot:
+            shot = True
+            
 
     for event in pygame.event.get():
         if event.type == pygame.MOUSEBUTTONDOWN:
@@ -340,9 +344,10 @@ while gameLoop:
     
     bullety = playerRect.y - 50
 
-    bullethit = pygame.Rect((bulletx,bullety,50,50))
+    bullethit = pygame.Rect((bulletx+ 100,bullety+100,50,25))
 
-    enimy2box = pygame.Rect((enimy2.position.x,enimy2.position.y,50,50))
+    enimy2box = pygame.Rect((enimy2.position.x + offset.x,enimy2.position.y + offset.y,100,100),)
+    
     # end
 
 
@@ -354,27 +359,36 @@ while gameLoop:
     screen.blit(QB1,(0,0),(0,0,screen.get_width(),screen.get_height()))
     clock.tick(FPS)
     mousePos = pygame.mouse.get_pos()
-    
+    #pygame.draw.rect(screen, RED, enimy2box, 0, 0)
+    #pygame.draw.rect(screen, RED, bullethit, 0, 0)
     handleInputs()
     if shot:
+        allowedtoshoot = False
+        shot = False
+        whenshot = facing
+        bulletmove = True
         lazer.play()
         print(enimy2.position[1])
+    if bulletmove:
         if bullethit.colliderect(enimy2box):
-            if shot:
+            if bulletmove:
                 print("kill")
                 enimyalive = False
 
         alatri = pygame.image.load("bullet.png")
         screen.blit(alatri, (bulletx, bullety))
-        if facing == "right":
+        if whenshot == "right":
             bulletx += bulletspeed
-        #if facing == "left":
-         #   bulletx -= bulletspeed 
-        
-
+        if whenshot == "left":
+            bulletx -= bulletspeed 
         if bulletx > 700:
             bulletx = playerRect.x
-            shot = False
+            bulletmove = False
+            allowedtoshoot = True
+        if bulletx < -700:
+            bulletx = playerRect.x
+            bulletmove = False
+            allowedtoshoot = True
     w, h = pygame.display.get_surface().get_size()
     playerRect = pygame.Rect(w/2-playerRect.w/2,h/2-playerRect.h/2,100,100)
     world = pygame.Vector2(playerRect.x+offset.x,playerRect.y+offset.y)
@@ -423,6 +437,8 @@ while gameLoop:
         angleCalc()
         pygame.display.flip()
         time.sleep(5)
+        import savefile
+        savefile.save_game("Levelone")
         
         gameLoop = False    
     if offset.x < -6222.010828212269:
@@ -433,3 +449,4 @@ while gameLoop:
         #gameLoop = False    
 
 pygame.quit()
+#import final_game_run_this
