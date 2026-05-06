@@ -2,6 +2,7 @@ import pygame,random,math
 from pygame.locals import *
 from pygame.math import Vector2
 import time
+died = False
 pygame.init()
 playerhealth = 100
 facing = "left"
@@ -485,7 +486,7 @@ def text(text2, x, y, size):
 if died:
     screen.fill('black')
     print("deathmessage")
-    text("YOU DIED "), 75, 50, 50)
+    text(("YOU DIED "), 75, 50, 50)
     pygame.display.update()
     time.sleep(5)
 

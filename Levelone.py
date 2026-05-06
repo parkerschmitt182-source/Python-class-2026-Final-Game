@@ -6,6 +6,7 @@ pygame.init()
 facing = "left"
 bulletmove = False
 pygame.mixer.init()
+died = False
 bulletspeed = 60
 playerhealth = 100
 #defining sounds
@@ -461,7 +462,7 @@ def text(text2, x, y, size):
 if died:
     screen.fill('black')
     print("deathmessage")
-    text("YOU DIED"), 75, 50, 50)
+    text(("YOU DIED"), 75, 50, 50)
     pygame.display.update()
     time.sleep(5)
 pygame.quit()

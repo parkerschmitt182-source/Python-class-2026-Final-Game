@@ -243,33 +243,11 @@ while Running==True:
 #pygame.quit()
 if levelstart == (1):
     import Levelone
-try:
-    if levelstart == (2):
-        if levelonebeat == "Levelone":
-            import Leveltwo
-        if levelonebeat == "BothBeat":
-            import Leveltwo
-        else:
-            
-            import the
-except:
-    import pygame
-    from tkinter import messagebox
-    from tkinter import Tk
+if levelstart == (2):
+    if levelonebeat == "Levelone":
+        import Leveltwo
+    if levelonebeat == "BothBeat":
+        import Leveltwo
 
-    # Initialize Pygame
-    pygame.init()
-    screen = pygame.display.set_mode((400, 300))
-
-    # Hide the main Tkinter window that usually pops up
-    root = Tk()
-    root.withdraw()
-
-    # Trigger an alert
-    messagebox.showinfo("Dont cheat", "Woah there dont cheat do level one first!")
-
-    # Cleanup
-    root.destroy()
-    import final_game_run_this
 
 sys.exit()
