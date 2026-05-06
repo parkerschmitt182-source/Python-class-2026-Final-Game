@@ -7,6 +7,7 @@ facing = "left"
 bulletmove = False
 pygame.mixer.init()
 bulletspeed = 60
+playerhealth = 100
 #defining sounds
 lazer = pygame.mixer.Sound("lazer.mp3")
 font = pygame.font.SysFont(None, 40)
@@ -127,10 +128,11 @@ class Enimy:
         #pygame.draw.rect(screen, (BLUE), self.rect, 0, 0)
 
     def collide(self,player):
-        global offset,grounded,mousePos,fallSpeed,momentumY,boost,reticle,bullethit,alive
+        global offset,grounded,mousePos,fallSpeed,momentumY,boost,reticle,bullethit,alive,playerhealth
 
         if self.rect.colliderect(player):
             print("hit")
+            playerhealth -=5
 
             #alive = False
             #leftOverlap = player.right - self.rect.left
@@ -325,6 +327,9 @@ speed = 5
 
 enimyalive = True
 while gameLoop:
+    if playerhealth < 0:
+        gameLoop = False
+        died = True
     if offset.x < -6222.010828212269:
         imagerow = 3
         imagenum = 0
@@ -358,6 +363,8 @@ while gameLoop:
     QB1 = pygame.transform.scale(QB1, (screen.get_width(), screen.get_height()))
     screen.blit(QB1,(0,0),(0,0,screen.get_width(),screen.get_height()))
     clock.tick(FPS)
+    pygame.draw.rect(screen, (255, 255, 255), (0, 10, 100, 5), border_radius=15)
+    pygame.draw.rect(screen, (0, 255, 0), (0, 10, playerhealth, 5), border_radius=15)
     mousePos = pygame.mouse.get_pos()
     #pygame.draw.rect(screen, RED, enimy2box, 0, 0)
     #pygame.draw.rect(screen, RED, bullethit, 0, 0)
@@ -436,7 +443,7 @@ while gameLoop:
         screen.blit(loadimage, (playerRect[0], playerRect[1]-65), (image, imageY,132,172))
         angleCalc()
         pygame.display.flip()
-        time.sleep(5)
+        time.sleep(1)
         import savefile
         savefile.save_game("Levelone")
         
@@ -447,6 +454,15 @@ while gameLoop:
         stopnext = True
         #time.sleep(1)
         #gameLoop = False    
-
+def text(text2, x, y, size):
+    my_font = pygame.font.SysFont('Arial', size)
+    text_surface = my_font.render(text2, True, 'white')
+    screen.blit(text_surface, (x, y))
+if died:
+    screen.fill('black')
+    print("deathmessage")
+    text("YOU DIED"), 75, 50, 50)
+    pygame.display.update()
+    time.sleep(5)
 pygame.quit()
 import final_game_run_this

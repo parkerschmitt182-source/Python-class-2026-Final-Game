@@ -3,6 +3,7 @@ from pygame.locals import *
 from pygame.math import Vector2
 import time
 pygame.init()
+playerhealth = 100
 facing = "left"
 bulletmove = False
 pygame.mixer.init()
@@ -128,10 +129,11 @@ class Enimy:
         #pygame.draw.rect(screen, (BLUE), self.rect, 0, 0)
 
     def collide(self,player):
-        global offset,grounded,mousePos,fallSpeed,momentumY,boost,reticle,bullethit,alive
+        global offset,grounded,mousePos,fallSpeed,momentumY,boost,reticle,bullethit,alive,playerhealth
 
         if self.rect.colliderect(player):
             print("hit")
+            playerhealth -= 5
 
             #alive = False
             #leftOverlap = player.right - self.rect.left
@@ -292,7 +294,7 @@ tilemap = [
     'B_______________B________________________________________________________________BBBB_______',
     'B_______B_______B____BBBBBBBBBBB_____________BBBB___________________________BBBB____________',
     'B_______________B____________________BBBBB___________________________BBBBB_____B_____________',
-    'B_______________B______________________________________________________________B_____________',
+    'B_______________B______________________________________________________________B____B________',
     'BBBBBBBBBBBBBBBBBBBBBBB___________________________BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB'
             ]
 blocks = []
@@ -327,6 +329,10 @@ speed = 5
 
 enimyalive = True
 while gameLoop:
+    if playerhealth < 0:
+        died = True
+        gameLoop = False
+        died = True
     if offset.x < -8063.881846308742:
         imagerow = 3
         imagenum = 0
@@ -375,6 +381,9 @@ while gameLoop:
     QB1 = pygame.transform.scale(QB1, (screen.get_width(), screen.get_height()))
     screen.blit(QB1,(0,0),(0,0,screen.get_width(),screen.get_height()))
     clock.tick(FPS)
+    pygame.draw.rect(screen, (255, 255, 255), (0, 10, 100, 5), border_radius=15)
+    pygame.draw.rect(screen, (0, 255, 0), (0, 10, playerhealth, 5), border_radius=15)
+
     mousePos = pygame.mouse.get_pos()
     #pygame.draw.rect(screen, RED, enimy2box, 0, 0)
     #pygame.draw.rect(screen, RED, bullethit, 0, 0)
@@ -456,7 +465,7 @@ while gameLoop:
         screen.blit(loadimage, (playerRect[0], playerRect[1]-65), (image, imageY,132,172))
         angleCalc()
         pygame.display.flip()
-        time.sleep(5)
+        time.sleep(2)
         import savefile
         savefile.save_game("BothBeat")
         
@@ -468,6 +477,17 @@ while gameLoop:
         stopnext = True
         #time.sleep(1)
         #gameLoop = False    
+
+def text(text2, x, y, size):
+    my_font = pygame.font.SysFont('Arial', size)
+    text_surface = my_font.render(text2, True, 'white')
+    screen.blit(text_surface, (x, y))
+if died:
+    screen.fill('black')
+    print("deathmessage")
+    text("YOU DIED "), 75, 50, 50)
+    pygame.display.update()
+    time.sleep(5)
 
 pygame.quit()
 import final_game_run_this

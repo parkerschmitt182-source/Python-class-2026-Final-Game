@@ -247,6 +247,8 @@ try:
     if levelstart == (2):
         if levelonebeat == "Levelone":
             import Leveltwo
+        if levelonebeat == "BothBeat":
+            import Leveltwo
         else:
             
             import the
