@@ -123,7 +123,7 @@ def tutorial():
     middle = screen.get_width() /2 - widthtut/2
     pygame.draw.rect(screen, (157, 171, 191), (middle, 10, widthtut, heighttut), border_radius=15)
     middle +=10
-    text("Tuturial", middle,20,30)
+    text("Tutorial", middle,20,30)
     text("Arrow Keys To Move", middle,50, 20)
     text("Space to shoot", middle,70, 20)
     text("Enter to enter Level", middle,90, 20)
