@@ -466,6 +466,6 @@ if died:
     pygame.display.update()
     time.sleep(5)
 print("done")
-pygame.quit()
+
 print("ahhhhh")
 import final_game_run_this
