@@ -468,4 +468,7 @@ if died:
 print("done")
 
 print("ahhhhh")
-import final_game_run_this
+try:
+    import final_game_run_this
+except:
+    import final_game_run_this

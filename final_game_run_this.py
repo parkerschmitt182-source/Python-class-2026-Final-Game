@@ -39,6 +39,8 @@ alatrilines = [
 "documentation, including",
 "from Pope Gregory IX."
 ]
+import time
+time.sleep(1)
 import savefile
 
 print(savefile.read_game(65964786578236785))
