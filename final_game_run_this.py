@@ -246,8 +246,11 @@ if levelstart == (1):
 if levelstart == (2):
     if levelonebeat == "Levelone":
         import Leveltwo
+
     if levelonebeat == "BothBeat":
         import Leveltwo
+    elif levelonebeat != "BothBeat" or "Levelone":
+        import final_game_run_this
 
 
 sys.exit()
