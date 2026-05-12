@@ -44,6 +44,7 @@ time.sleep(1)
 import savefile
 
 print(savefile.read_game(65964786578236785))
+
 levelonebeat = savefile.read_game(65964786578236785)
 #importing modules and initializing pygame and mixer
 import pygame, sys
@@ -93,6 +94,75 @@ def text(text2, x, y, size):
     my_font = pygame.font.SysFont('Arial', size)
     text_surface = my_font.render(text2, True, 'white')
     screen.blit(text_surface, (x, y))
+
+
+
+if levelonebeat != "BothBeat" or "Levelone":
+    my_rect = pygame.Rect(350, 200, 100, 50) 
+    my_rect2 = pygame.Rect(550, 200, 100, 50) 
+    blue_color = (0, 0, 255)
+    blue_color2 = (0, 0, 255)
+    going = True
+    while going:
+       
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                # 2. Check if the mouse position is inside our rectangle
+                if my_rect.collidepoint(event.pos):
+                    print("Blue rectangle clicked!")
+                    # Optional: Change color or perform an action
+                    blue_color = (0, 255, 0) # Turn green when clicked
+
+                    going = False
+
+                   
+                   
+                if my_rect2.collidepoint(event.pos):
+                    print("Blue rectangle clicked!")
+                    # Optional: Change color or perform an action
+                    blue_color2 = (0, 255, 0) # Turn green when clicked
+                    import savefile
+                    savefile.save_game("none")
+                    levelonebeat = "nono"
+                   
+                    going = False
+                   
+                   
+
+        screen.fill((0, 0, 0))
+        # 3. Draw using the Rect object
+        text("Welcome To My Game", 350, 50, 30)
+        text("Would You like to load or start a new game", 350, 100, 30)
+        
+        pygame.draw.rect(screen, blue_color, my_rect)
+
+        pygame.draw.rect(screen, blue_color2, my_rect2)
+        text("load", 375, 215, 30)
+        text("new", 575, 215, 30)
+        
+        pygame.display.flip() 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 def Menu(level):
     if levelname == "Asti":
         pygame.draw.rect(screen, (157, 171, 191), (10, 50, 270, 400), border_radius=15)
@@ -164,7 +234,60 @@ if levelonebeat == "BothBeat":
     screen.blit(alatrinbeat, (500,100))
     text("Good job all levels done", 350, 50, 30)
     pygame.display.update()
-    time.sleep(5)
+    time.sleep(2)
+
+    my_rect = pygame.Rect(350, 200, 100, 50) 
+    my_rect2 = pygame.Rect(550, 200, 100, 50) 
+    blue_color = (0, 0, 255)
+    blue_color2 = (0, 0, 255)
+    going = True
+    while going:
+       
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                # 2. Check if the mouse position is inside our rectangle
+                if my_rect.collidepoint(event.pos):
+                    print("Blue rectangle clicked!")
+                    # Optional: Change color or perform an action
+                    blue_color = (0, 255, 0) # Turn green when clicked
+                    import savefile
+                    savefile.save_game("none")
+                    going = False
+                   
+                    import final_game_run_this
+                if my_rect2.collidepoint(event.pos):
+                    print("Blue rectangle clicked!")
+                    # Optional: Change color or perform an action
+                    blue_color2 = (0, 255, 0) # Turn green when clicked
+                    import savefile
+                    savefile.save_game("none")
+                    going = False
+                   
+                    import final_game_run_this
+
+        screen.fill((0, 0, 0))
+        # 3. Draw using the Rect object
+        text("Good job all levels done", 350, 50, 30)
+        text("Thank You for Playing!!!", 350, 100, 30)
+        text("Would You Like To Play Again!", 350, 150, 30)
+        pygame.draw.rect(screen, blue_color, my_rect)
+
+        pygame.draw.rect(screen, blue_color2, my_rect2)
+        text("Yes", 375, 215, 30)
+        text("No", 575, 215, 30)
+        
+        pygame.display.flip()
+
+    time.sleep(1)
+    Running = False
+
+
+
+
 while Running==True:
     screen.fill(colorBlack)
     QB1 = pygame.image.load("background.jpeg")
@@ -179,6 +302,7 @@ while Running==True:
     if menuenabled == 2:
         levelname = "Alatri"
         Menu("Level 2")
+
     if key[pygame.K_e]:
          showtut = False
     if key[pygame.K_LEFT]:
