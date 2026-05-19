@@ -471,4 +471,5 @@ print("ahhhhh")
 try:
     import final_game_run_this
 except:
+    time.sleep(1)
     import final_game_run_this
