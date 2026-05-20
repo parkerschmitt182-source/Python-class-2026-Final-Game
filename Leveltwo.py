@@ -423,6 +423,8 @@ if typingstory:
 time.sleep(1)
 pygame.mixer.music.stop()
 
+pygame.mixer.music.load("Leveltwo.mp3")
+pygame.mixer.music.play(-1)
 
 
 

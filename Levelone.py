@@ -322,6 +322,10 @@ for y, row in enumerate(tilemap):
 world = pygame.Vector2(playerRect.x+offset.x,playerRect.y+offset.y)
 print(str(blocks))
 
+pygame.mixer.music.stop()
+
+pygame.mixer.music.load("Levelone.mp3")
+pygame.mixer.music.play(-1)
 
 speed = 5
 
