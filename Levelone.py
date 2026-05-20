@@ -341,8 +341,7 @@ while gameLoop:
     if enimyalive:
         # enimy move
         enimyspeed = 5
-        player_world = pygame.Vector2(playerRect.centerx - offset.x,
-                                    playerRect.centery - offset.y)
+        player_world = pygame.Vector2(playerRect.centerx - offset.x, playerRect.centery - offset.y)
         direction = player_world - enimy2.position
         if direction.length() > 0:
             direction = direction.normalize()
