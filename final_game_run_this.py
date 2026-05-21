@@ -274,6 +274,10 @@ if levelonebeat == "BothBeat":
         text("Good job all levels done", 350, 50, 30)
         text("Thank You for Playing!!!", 350, 100, 30)
         text("Would You Like To Play Again!", 350, 150, 30)
+        text("Information From: https://www.miracolieucaristici.org/", 10, 525, 30)
+        text("Sound Effect/Music: Pixabay.com", 10, 550, 30)
+        text("Images: Parker Schmitt/Google Gemini", 10, 575, 30)
+        text("Code by: Parker Schmitt", 10, 600, 30)
         pygame.draw.rect(screen, blue_color, my_rect)
 
         pygame.draw.rect(screen, blue_color2, my_rect2)
